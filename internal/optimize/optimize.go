@@ -18,9 +18,13 @@ func Optimize(s *skill.Skill, p profile.Profile, ws []warn.Warning, r agent.Runn
 	prompt := buildPrompt(s, p, ws)
 	out, err := r.Run(prompt)
 	if err != nil || strings.TrimSpace(out) == "" {
+		msg := "optimization pass returned empty output; using deterministic output"
+		if err != nil {
+			msg = fmt.Sprintf("optimization pass failed; using deterministic output: %v", err)
+		}
 		return s.Body, []warn.Warning{{
 			Harness: p.Name(), Severity: warn.Warn, Location: "body",
-			Code: "optimize-failed", Message: fmt.Sprintf("optimization pass failed; using deterministic output: %v", err),
+			Code: "optimize-failed", Message: msg,
 		}}
 	}
 	return out, nil

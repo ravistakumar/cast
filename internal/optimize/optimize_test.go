@@ -42,6 +42,19 @@ func TestOptimizeFallsBackOnError(t *testing.T) {
 	}
 }
 
+func TestOptimizeFallsBackOnEmptyOutput(t *testing.T) {
+	s := &skill.Skill{Name: "pdf", Description: "PDFs", Body: "use Task"}
+	p, _ := profile.Get("codex")
+	ws := []warn.Warning{{Harness: "codex", Code: "tool-no-equivalent", Message: "Task"}}
+	body, out := Optimize(s, p, ws, stubRunner{out: "   \n  "})
+	if body != "use Task" {
+		t.Fatalf("expected original body on empty output, got %q", body)
+	}
+	if !hasCode(out, "optimize-failed") {
+		t.Fatalf("expected optimize-failed warning, got %+v", out)
+	}
+}
+
 func hasCode(ws []warn.Warning, code string) bool {
 	for _, w := range ws {
 		if w.Code == code {
