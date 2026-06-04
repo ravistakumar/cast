@@ -15,6 +15,15 @@ var canonicalTools = []string{
 	"Task", "WebFetch", "WebSearch", "NotebookEdit", "TodoWrite",
 }
 
+// toolRe holds one whole-word matcher per canonical tool, compiled once.
+var toolRe = func() map[string]*regexp.Regexp {
+	m := make(map[string]*regexp.Regexp, len(canonicalTools))
+	for _, t := range canonicalTools {
+		m[t] = regexp.MustCompile(`\b` + regexp.QuoteMeta(t) + `\b`)
+	}
+	return m
+}()
+
 // Emit produces a profile's output files for a skill plus structured warnings.
 // The body is copied verbatim; only deterministic detection happens here.
 func Emit(s *skill.Skill, p profile.Profile) ([]profile.File, []warn.Warning) {
@@ -60,6 +69,5 @@ func scanTools(s *skill.Skill, p profile.Profile) []warn.Warning {
 }
 
 func mentions(body, tool string) bool {
-	re := regexp.MustCompile(`\b` + regexp.QuoteMeta(tool) + `\b`)
-	return re.MatchString(body)
+	return toolRe[tool].MatchString(body)
 }
