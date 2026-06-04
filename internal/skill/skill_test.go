@@ -15,7 +15,7 @@ func TestValidate(t *testing.T) {
 		{"missing name", Skill{Description: "x"}, true},
 		{"missing desc", Skill{Name: "pdf-tools"}, true},
 		{"bad chars", Skill{Name: "PDF_Tools", Description: "x"}, true},
-		{"too long name", Skill{Name: string(make([]byte, 65)), Description: "x"}, true},
+		{"too long name", Skill{Name: strings.Repeat("a", 65), Description: "x"}, true},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {

@@ -81,8 +81,10 @@ func loadAssets(dir string) ([]Asset, error) {
 	var assets []Asset
 	for _, sub := range []string{"scripts", "references", "assets"} {
 		root := filepath.Join(dir, sub)
-		if _, err := os.Stat(root); err != nil {
+		if _, err := os.Stat(root); os.IsNotExist(err) {
 			continue
+		} else if err != nil {
+			return nil, fmt.Errorf("skill: accessing %s: %w", sub, err)
 		}
 		err := filepath.WalkDir(root, func(p string, d fs.DirEntry, err error) error {
 			if err != nil {
