@@ -24,13 +24,18 @@ func Install(files []profile.File, root string) error {
 }
 
 // liveRoots maps a harness to its live skills root under the home dir. Combined
-// with a profile's SkillDir ("skills/<name>"), these resolve to
-// ~/.codex/skills/<name>/ and ~/.cursor/skills/<name>/, the documented
-// user-level skill locations (developers.openai.com/codex/skills,
-// cursor.com/docs/context/skills).
+// with a profile's SkillDir ("skills/<name>"), these resolve to the documented
+// user-level skill locations, e.g. ~/.codex/skills/<name>/ and
+// ~/.config/opencode/skills/<name>/ (developers.openai.com/codex/skills,
+// cursor.com/docs/context/skills, geminicli.com/docs/cli/skills,
+// code.visualstudio.com/docs/copilot/customization/agent-skills,
+// opencode.ai/docs/skills).
 var liveRoots = map[string]string{
-	"codex":  ".codex",
-	"cursor": ".cursor",
+	"codex":    ".codex",
+	"copilot":  ".copilot",
+	"cursor":   ".cursor",
+	"gemini":   ".gemini",
+	"opencode": ".config/opencode",
 }
 
 // DefaultRoot returns the live install root for a harness.

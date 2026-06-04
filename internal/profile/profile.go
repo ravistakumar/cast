@@ -23,8 +23,11 @@ type Profile interface {
 }
 
 var registry = map[string]Profile{
-	"codex":  Codex{},
-	"cursor": Cursor{},
+	"codex":    Codex{},
+	"copilot":  Copilot{},
+	"cursor":   Cursor{},
+	"gemini":   Gemini{},
+	"opencode": OpenCode{},
 }
 
 // Get returns the profile registered under name.

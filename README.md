@@ -128,17 +128,23 @@ Code). `cast` compiles it to:
 
 | Target | Output | Notes |
 | --- | --- | --- |
-| Codex  | `skills/<name>/SKILL.md` + `agents/openai.yaml` | OpenAI Codex CLI extension file |
-| Cursor | `skills/<name>/SKILL.md`                        | Cursor skill directory |
+| Codex      | `skills/<name>/SKILL.md` + `agents/openai.yaml` | OpenAI Codex CLI extension file |
+| Cursor     | `skills/<name>/SKILL.md`                        | Cursor skill directory |
+| Gemini CLI | `skills/<name>/SKILL.md`                        | no enhancement file |
+| Copilot    | `skills/<name>/SKILL.md`                        | GitHub Copilot (VS Code); no enhancement file |
+| OpenCode   | `skills/<name>/SKILL.md`                        | no enhancement file |
+
+`cast build` defaults to `codex` and `cursor`; pass `--target gemini,copilot,opencode`
+(or set `targets` in config) for the others.
 
 To add a target, implement one `Profile` in `internal/profile` — directory
 layout, frontmatter, a tool-name table, and any enhancement files.
 
 > **Note:** `--install` places skills in the documented user-level locations —
-> `~/.codex/skills/<name>/` and `~/.cursor/skills/<name>/`
-> ([Codex](https://developers.openai.com/codex/skills),
-> [Cursor](https://cursor.com/docs/context/skills)). These can drift across agent
-> releases; the `dist/` output does not depend on them.
+> e.g. `~/.codex/skills/<name>/`, `~/.cursor/skills/<name>/`,
+> `~/.gemini/skills/<name>/`, `~/.copilot/skills/<name>/`,
+> `~/.config/opencode/skills/<name>/`. These can drift across agent releases; the
+> `dist/` output does not depend on them.
 
 ## Configuration
 
