@@ -13,6 +13,8 @@ skill to its target using your own authenticated agent CLI.
 [![Go Report Card](https://goreportcard.com/badge/github.com/ravistakumar/cast)](https://goreportcard.com/report/github.com/ravistakumar/cast)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
+![cast demo](docs/demo.gif)
+
 </div>
 
 ## Why cast?
@@ -78,6 +80,29 @@ dist/
 
 The committed `dist/` artifacts are what others install; `--install` is a
 convenience that also drops them into your live harness directories.
+
+## Example
+
+A complete example skill lives in [`examples/changelog/`](examples/changelog/) —
+a skill that generates grouped release notes from git history. Compile it:
+
+```bash
+cast build examples/changelog --target codex,cursor
+```
+
+```
+dist/
+  codex/skills/changelog/SKILL.md
+  codex/skills/changelog/agents/openai.yaml
+  codex/skills/changelog/scripts/collect-commits.sh
+  cursor/skills/changelog/SKILL.md
+  cursor/skills/changelog/scripts/collect-commits.sh
+```
+
+Its body references the `Grep` tool, so the build warns that `Grep` has no Codex
+equivalent while compiling cleanly for Cursor (which maps it to `grep`) — the
+same skill, shaped for each harness. The demo above shows this run end to end;
+re-render it with `sh docs/demo/render.sh`.
 
 ## How it works
 
