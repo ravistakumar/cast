@@ -7,8 +7,8 @@ import (
 	"github.com/ravistakumar/cast/internal/skill"
 )
 
-// cursorInstallSubdir is the per-skill output subdirectory. VERIFY against
-// current Cursor docs before relying on --install.
+// cursorInstallSubdir is the per-skill output subdirectory. Cursor loads skills
+// from <root>/skills/<name>/SKILL.md (cursor.com/docs/context/skills).
 const cursorInstallSubdir = "skills"
 
 // Cursor emits a skill for the Cursor agent.

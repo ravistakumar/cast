@@ -7,8 +7,8 @@ import (
 	"github.com/ravistakumar/cast/internal/skill"
 )
 
-// codexInstallSubdir is the per-skill output subdirectory. VERIFY against
-// current Codex docs before relying on --install.
+// codexInstallSubdir is the per-skill output subdirectory. Codex loads skills
+// from <root>/skills/<name>/SKILL.md (developers.openai.com/codex/skills).
 const codexInstallSubdir = "skills"
 
 // Codex emits a skill for the OpenAI Codex CLI.
@@ -38,10 +38,13 @@ func (Codex) Frontmatter(s *skill.Skill) string {
 	return b.String()
 }
 
-// Enhancements emits Codex's agents/openai.yaml extension file.
+// Enhancements emits Codex's agents/openai.yaml extension file, using Codex's
+// documented schema (an `interface` block). See
+// developers.openai.com/codex/skills.
 func (Codex) Enhancements(s *skill.Skill) []File {
 	var b strings.Builder
-	fmt.Fprintf(&b, "name: %s\n", s.Name)
-	fmt.Fprintf(&b, "description: %s\n", s.Description)
+	b.WriteString("interface:\n")
+	fmt.Fprintf(&b, "  display_name: %s\n", s.Name)
+	fmt.Fprintf(&b, "  short_description: %s\n", s.Description)
 	return []File{{RelPath: "agents/openai.yaml", Bytes: []byte(b.String())}}
 }

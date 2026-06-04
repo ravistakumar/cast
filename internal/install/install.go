@@ -23,8 +23,11 @@ func Install(files []profile.File, root string) error {
 	return nil
 }
 
-// liveRoots maps a harness to its live skills root under the home dir.
-// VERIFY these against current tool docs before relying on --install.
+// liveRoots maps a harness to its live skills root under the home dir. Combined
+// with a profile's SkillDir ("skills/<name>"), these resolve to
+// ~/.codex/skills/<name>/ and ~/.cursor/skills/<name>/, the documented
+// user-level skill locations (developers.openai.com/codex/skills,
+// cursor.com/docs/context/skills).
 var liveRoots = map[string]string{
 	"codex":  ".codex",
 	"cursor": ".cursor",

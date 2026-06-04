@@ -109,9 +109,11 @@ Code). `cast` compiles it to:
 To add a target, implement one `Profile` in `internal/profile` — directory
 layout, frontmatter, a tool-name table, and any enhancement files.
 
-> **Note:** the live install directories used by `--install` are version-sensitive
-> across agent releases; verify them against your installed tools before relying
-> on `--install`. The `dist/` output does not depend on them.
+> **Note:** `--install` places skills in the documented user-level locations —
+> `~/.codex/skills/<name>/` and `~/.cursor/skills/<name>/`
+> ([Codex](https://developers.openai.com/codex/skills),
+> [Cursor](https://cursor.com/docs/context/skills)). These can drift across agent
+> releases; the `dist/` output does not depend on them.
 
 ## Configuration
 

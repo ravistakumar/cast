@@ -33,6 +33,12 @@ func TestCodexFrontmatterAndEnhancements(t *testing.T) {
 	if len(files) != 1 || files[0].RelPath != "agents/openai.yaml" {
 		t.Fatalf("codex should emit agents/openai.yaml, got %+v", files)
 	}
+	yaml := string(files[0].Bytes)
+	if !strings.Contains(yaml, "interface:") ||
+		!strings.Contains(yaml, "display_name: pdf") ||
+		!strings.Contains(yaml, "short_description: PDFs") {
+		t.Fatalf("openai.yaml missing documented interface schema:\n%s", yaml)
+	}
 }
 
 func TestCursorToolMap(t *testing.T) {
