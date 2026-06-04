@@ -1,0 +1,36 @@
+version: 2
+project_name: cast
+before:
+  hooks:
+    - go mod tidy
+builds:
+  - main: ./cmd/cast
+    binary: cast
+    env: [CGO_ENABLED=0]
+    ldflags:
+      - -s -w -X github.com/ravistakumar/cast/internal/version.Version={{.Version}}
+    goos: [linux, darwin, windows]
+    goarch: [amd64, arm64]
+archives:
+  - formats: [tar.gz]
+    name_template: "{{ .ProjectName }}_{{ .Os }}_{{ .Arch }}"
+    format_overrides:
+      - goos: windows
+        formats: [zip]
+checksum:
+  name_template: checksums.txt
+homebrew_casks:
+  - name: cast
+    repository:
+      owner: ravistakumar
+      name: homebrew-tap
+      token: "{{ .Env.HOMEBREW_TAP_GITHUB_TOKEN }}"
+    directory: Casks
+    homepage: "https://github.com/ravistakumar/cast"
+    description: "Compile one Agent Skill into harness-native skills for every coding agent"
+    hooks:
+      post:
+        install: |
+          if OS.mac?
+            system_command "/usr/bin/xattr", args: ["-dr", "com.apple.quarantine", "#{staged_path}/cast"]
+          end
