@@ -26,14 +26,21 @@ func defaults() *Config {
 func Load() (*Config, error) {
 	c := defaults()
 	if path := configPath(); path != "" {
-		if _, err := os.Stat(path); err == nil {
+		switch _, err := os.Stat(path); {
+		case err == nil:
 			if _, err := toml.DecodeFile(path, c); err != nil {
 				return nil, err
 			}
+		case !os.IsNotExist(err):
+			return nil, err
 		}
 	}
 	if v := os.Getenv("CAST_TARGETS"); v != "" {
-		c.Targets = strings.Split(v, ",")
+		parts := strings.Split(v, ",")
+		for i := range parts {
+			parts[i] = strings.TrimSpace(parts[i])
+		}
+		c.Targets = parts
 	}
 	if v := os.Getenv("CAST_OUTDIR"); v != "" {
 		c.Outdir = v
