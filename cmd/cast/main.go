@@ -4,14 +4,15 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/ravistakumar/cast/internal/cli"
 	"github.com/ravistakumar/cast/internal/version"
 )
 
 func main() {
-	if len(os.Args) > 1 && os.Args[1] == "--version" {
-		fmt.Println("cast", version.String())
-		return
+	root := cli.New()
+	root.Version = version.String()
+	if err := root.Execute(); err != nil {
+		fmt.Fprintln(os.Stderr, "cast:", err)
+		os.Exit(1)
 	}
-	fmt.Fprintln(os.Stderr, "cast: no command (cli wired in a later task)")
-	os.Exit(1)
 }
