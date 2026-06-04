@@ -1,6 +1,6 @@
 module github.com/ravistakumar/cast
 
-go 1.26.4
+go 1.23
 
 require (
 	github.com/BurntSushi/toml v1.6.0 // indirect
