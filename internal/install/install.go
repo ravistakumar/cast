@@ -14,7 +14,7 @@ func Install(files []profile.File, root string) error {
 	for _, f := range files {
 		dest := filepath.Join(root, filepath.FromSlash(f.RelPath))
 		if err := os.MkdirAll(filepath.Dir(dest), 0o755); err != nil {
-			return err
+			return fmt.Errorf("install: creating directory for %s: %w", dest, err)
 		}
 		if err := os.WriteFile(dest, f.Bytes, 0o644); err != nil {
 			return fmt.Errorf("install: writing %s: %w", dest, err)
