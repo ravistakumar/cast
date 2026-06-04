@@ -106,7 +106,7 @@ func buildCmd() *cobra.Command {
 					if err != nil {
 						allWarns = append(allWarns, warn.Warning{Harness: t, Severity: warn.Warn, Code: "install-skipped", Message: err.Error()})
 					} else if err := install.Install(files, live); err != nil {
-						return err
+						allWarns = append(allWarns, warn.Warning{Harness: t, Severity: warn.Warn, Code: "install-skipped", Message: err.Error()})
 					}
 				}
 				allWarns = append(allWarns, warns...)
@@ -144,6 +144,8 @@ func applyOptimize(s *skill.Skill, p profile.Profile, files []profile.File, warn
 	newBody, optWarns := optimize.Optimize(s, p, warns, r)
 	adapted := *s
 	adapted.Body = newBody
-	files, _ = emit.Emit(&adapted, p) // re-emit with adapted body; structural warns already known
-	return files, optWarns
+	// Re-emit with the (possibly adapted) body and keep any residual structural
+	// warnings — a partial optimization may leave untranslatable tools in place.
+	files, residual := emit.Emit(&adapted, p)
+	return files, append(residual, optWarns...)
 }
